@@ -1,5 +1,7 @@
 package icosoku;
 
+import java.util.HashSet;
+
 /**
  * Created by Georg on 17.10.2014.
  */
@@ -12,6 +14,8 @@ public class SimpleSolver
         int[] problem1 = {1, 3, 10, 7, 5, 4, 11, 6, 12, 8, 9, 2};
 
         IcoSoku icoSoku = new IcoSoku(problem1);
+
+        HashSet<Integer> sortierteFlächen = new HashSet<Integer>();
 
         if (SolveIcoSoku(icoSoku, 0))
         {
@@ -39,16 +43,7 @@ public class SimpleSolver
                 {
                     icoSoku.setzePlaettchen(fläche, plättchen, orient);
 
-                    int[] eckenToCheck = icoSoku.getEckenToFlaeche(fläche);
-                    boolean alleEckenRichtig = true;
-
-                    for (int i = 0; i < eckenToCheck.length; i++)
-                    {
-                        int eckeToCheck = eckenToCheck[i];
-                        alleEckenRichtig = alleEckenRichtig && (icoSoku.istWertAnEcke(eckeToCheck) <= icoSoku.sollWertAnEcke(eckeToCheck));
-                    }
-
-                    if (alleEckenRichtig)
+                    if (flaecheKorrekt(icoSoku, fläche))
                     {
                         if (SolveIcoSoku(icoSoku, fläche + 1))
                         {
@@ -62,6 +57,28 @@ public class SimpleSolver
         }
 
         return false;
+    }
+
+    private static boolean flaecheKorrekt(IcoSoku icoSoku, int fläche)
+    {
+        int[] eckenToCheck = icoSoku.getEckenToFlaeche(fläche);
+        boolean alleEckenRichtig = true;
+
+        for (int i = 0; i < eckenToCheck.length; i++)
+        {
+            int eckeToCheck = eckenToCheck[i];
+            if(icoSoku.anzahlPlaettchenAnEcke(eckeToCheck) == 5)
+            {
+                // Wenn schon alle Flächen zur Ecke belegt sind, muss die Zahl gleich sein
+                alleEckenRichtig = alleEckenRichtig && (icoSoku.sollWertAnEcke(eckeToCheck) == icoSoku.istWertAnEcke(eckeToCheck));
+            }
+            else
+            {
+                // Sonst muss kleiner gleich sein
+                alleEckenRichtig = alleEckenRichtig && (icoSoku.istWertAnEcke(eckeToCheck) <= icoSoku.sollWertAnEcke(eckeToCheck));
+            }
+        }
+        return alleEckenRichtig;
     }
 
 }
