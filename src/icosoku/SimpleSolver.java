@@ -35,10 +35,21 @@ public class SimpleSolver
             return true;
         }
 
+        // Mekre alle geprüften Plättchen
+        boolean[] schonGeprüft = new boolean[20];
+
         for (int plättchen = 0; plättchen < 20; plättchen++)
         {
             if (icoSoku.istPlaettchenVerfuegbar(plättchen))
             {
+                schonGeprüft[plättchen] = true;
+
+                // Doppelte Plättchen müssen nicht nochmal gerpüft werden
+                if(doppeltesPlättchen(plättchen, schonGeprüft))
+                {
+                    continue;
+                }
+
                 // Symmetrische Plättchen müssen nicht gedreht werden
                 int maxOrient = 2;
                 if(plättchenSymmetrisch(icoSoku, plättchen))
@@ -64,6 +75,39 @@ public class SimpleSolver
         }
 
         return false;
+    }
+
+    private static boolean doppeltesPlättchen(int plättchen, boolean[] schonGeprüft)
+    {
+        switch (plättchen)
+        {
+            // Plättchen 5=6=7
+            case 5:
+                return schonGeprüft[6] || schonGeprüft[7];
+            case 6:
+                return schonGeprüft[5] || schonGeprüft[7];
+            case 7:
+                return schonGeprüft[5] || schonGeprüft[6];
+            // Plättchen 8=9=10
+            case 8:
+                return schonGeprüft[9] || schonGeprüft[10];
+            case 9:
+                return schonGeprüft[8] || schonGeprüft[10];
+            case 10:
+                return schonGeprüft[8] || schonGeprüft[9];
+            // Plättchen 14=15
+            case 14:
+                return schonGeprüft[15];
+            case 15:
+                return schonGeprüft[14];
+            // Plättchen 16=17
+            case 16:
+                return schonGeprüft[17];
+            case 17:
+                return schonGeprüft[16];
+            default:
+                return false;
+        }
     }
 
     private static boolean plättchenSymmetrisch(IcoSoku icoSoku, int plättchen)
