@@ -39,7 +39,14 @@ public class SimpleSolver
         {
             if (icoSoku.istPlaettchenVerfuegbar(plättchen))
             {
-                for (int orient = 0; orient < 2; orient++)
+                // Symmetrische Plättchen müssen nicht gedreht werden
+                int maxOrient = 2;
+                if(plättchenSymmetrisch(icoSoku, plättchen))
+                {
+                    maxOrient = 0;
+                }
+
+                for (int orient = 0; orient < maxOrient; orient++)
                 {
                     icoSoku.setzePlaettchen(fläche, plättchen, orient);
 
@@ -57,6 +64,15 @@ public class SimpleSolver
         }
 
         return false;
+    }
+
+    private static boolean plättchenSymmetrisch(IcoSoku icoSoku, int plättchen)
+    {
+        Integer A = icoSoku.zahlAmPlaettchen(plättchen, 0);
+        Integer B = icoSoku.zahlAmPlaettchen(plättchen, 1);
+        Integer C = icoSoku.zahlAmPlaettchen(plättchen, 2);
+
+        return A.equals(B) && B.equals(C) && A.equals(C);
     }
 
     private static boolean flaecheKorrekt(IcoSoku icoSoku, int fläche)
