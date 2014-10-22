@@ -213,6 +213,16 @@ public class IcoSoku
         return flaeche2ecke[flaeche];
     }
 
+    public int[] getFlaechenToEcke(int ecke)
+    {
+        if(ecke < 0 || ecke > 11)
+        {
+            throw new IllegalArgumentException();
+        }
+
+        return ecke2flaeche[ecke];
+    }
+
     /* public static void main (String[] args) {
     int[] zahlen = {1,3,10,7,5,4,11,6,12, 8,9,2};
 	IcoSoku testee = new IcoSoku(zahlen);

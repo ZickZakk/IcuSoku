@@ -5,33 +5,9 @@ import java.util.HashSet;
 /**
  * Created by Georg on 17.10.2014.
  */
-public class SimpleSolver
+public class IcoSokuSolver
 {
-
-    public static void main(String[] args)
-    {
-
-        int[] problem1 = {1, 3, 10, 7, 5, 4, 11, 6, 12, 8, 9, 2};
-        int[] problem2 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
-        int[] problem3 = {6, 12, 9, 10, 7, 2, 8, 1, 3, 5, 4, 11};
-
-        IcoSoku icoSoku = new IcoSoku(problem1);
-
-        long now = System.currentTimeMillis();
-
-        if (SolveIcoSoku(icoSoku, 0))
-        {
-            long total = System.currentTimeMillis() - now;
-            System.out.println("Rätsel gelöst in " + total + " ms!");
-        }
-        else
-        {
-            System.out.println("Rätsel konnte nicht gelöst werden!");
-        }
-
-    }
-
-    private static boolean SolveIcoSoku(IcoSoku icoSoku, int fläche)
+    public static boolean SolveIcoSoku(IcoSoku icoSoku, int fläche)
     {
         if (fläche > 19)
         {
@@ -67,6 +43,57 @@ public class SimpleSolver
                     if (flaecheKorrekt(icoSoku, fläche))
                     {
                         if (SolveIcoSoku(icoSoku, fläche + 1))
+                        {
+                            return true;
+                        }
+                    }
+
+                    icoSoku.entfernePlaettchen(fläche);
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean SolveIcoSoku(IcoSoku icoSoku, int flächeId, Integer[] sortierteFlächen)
+    {
+        if (flächeId > 19)
+        {
+            return icoSoku.pruefeAlles();
+        }
+
+        int fläche = sortierteFlächen[flächeId];
+
+        // Merke alle geprüften Plättchen
+        boolean[] schonGeprüft = new boolean[20];
+
+        for (int plättchen = 0; plättchen < 20; plättchen++)
+        {
+            if (icoSoku.istPlaettchenVerfuegbar(plättchen))
+            {
+                schonGeprüft[plättchen] = true;
+
+                // Doppelte Plättchen müssen nicht nochmal gerpüft werden
+                if (doppeltesPlättchen(plättchen, schonGeprüft))
+                {
+                    continue;
+                }
+
+                // Symmetrische Plättchen müssen nicht gedreht werden
+                int maxOrient = 3;
+                if (plättchenSymmetrisch(icoSoku, plättchen))
+                {
+                    maxOrient = 1;
+                }
+
+                for (int orient = 0; orient < maxOrient; orient++)
+                {
+                    icoSoku.setzePlaettchen(fläche, plättchen, orient);
+
+                    if (flaecheKorrekt(icoSoku, fläche))
+                    {
+                        if (SolveIcoSoku(icoSoku, flächeId + 1, sortierteFlächen))
                         {
                             return true;
                         }
