@@ -17,11 +17,11 @@ public class Programm
 
         ArrayList<int[]> alleProbleme = new ArrayList<int[]>();
         alleProbleme.add(problem1);
-        alleProbleme.add(problem2);
-        alleProbleme.add(problem3);
-        alleProbleme.add(problem4);
+        //        alleProbleme.add(problem2);
+        //        alleProbleme.add(problem3);
+        //        alleProbleme.add(problem4);
 
-        //long gesamtZeit = solveStandard(alleProbleme);
+        //        long gesamtZeit = solveStandard(alleProbleme);
         //long gesamtZeit = solveWithSortedFlächen(alleProbleme);
         long gesamtZeit = solveWithSortedFlächenAdvanced(alleProbleme);
 
@@ -67,6 +67,12 @@ public class Programm
         {
             if (icoSoku.sollWertAnEcke(ecke) == 1)
             {
+                // Standard-Sortierung, weil 1 an erster Ecke?
+                if (ecke == 0)
+                {
+                    return new Integer[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19};
+                }
+
                 checkedEcken[ecke] = true;
 
                 int[] flaechen = icoSoku.getFlaechenToEcke(ecke);
