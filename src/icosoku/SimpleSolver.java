@@ -1,5 +1,7 @@
 package icosoku;
 
+import java.util.HashSet;
+
 /**
  * Created by Georg on 17.10.2014.
  */
@@ -10,6 +12,8 @@ public class SimpleSolver
     {
 
         int[] problem1 = {1, 3, 10, 7, 5, 4, 11, 6, 12, 8, 9, 2};
+        int[] problem2 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+        int[] problem3 = {6, 12, 9, 10, 7, 2, 8, 1, 3, 5, 4, 11};
 
         IcoSoku icoSoku = new IcoSoku(problem1);
 
@@ -49,11 +53,6 @@ public class SimpleSolver
                     continue;
                 }
 
-                if (plättchenSumme(icoSoku, plättchen) > flächenSumme(icoSoku, fläche))
-                {
-                    continue;
-                }
-
                 // Symmetrische Plättchen müssen nicht gedreht werden
                 int maxOrient = 3;
                 if (plättchenSymmetrisch(icoSoku, plättchen))
@@ -79,24 +78,6 @@ public class SimpleSolver
         }
 
         return false;
-    }
-
-    private static int flächenSumme(IcoSoku icoSoku, int fläche)
-    {
-        int[] ecken = icoSoku.getEckenToFlaeche(fläche);
-        int summe = 0;
-        for (int i = 0; i < ecken.length; i++)
-        {
-            int ecke = ecken[i];
-            summe += icoSoku.sollWertAnEcke(ecke) - icoSoku.istWertAnEcke(ecke);
-        }
-
-        return summe;
-    }
-
-    private static int plättchenSumme(IcoSoku icoSoku, int plättchen)
-    {
-        return icoSoku.zahlAmPlaettchen(plättchen, 0) + icoSoku.zahlAmPlaettchen(plättchen, 1) + icoSoku.zahlAmPlaettchen(plättchen, 2);
     }
 
     private static boolean doppeltesPlättchen(int plättchen, boolean[] schonGeprüft)
