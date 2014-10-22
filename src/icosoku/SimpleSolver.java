@@ -13,9 +13,12 @@ public class SimpleSolver
 
         IcoSoku icoSoku = new IcoSoku(problem1);
 
+        long now = System.currentTimeMillis();
+
         if (SolveIcoSoku(icoSoku, 0))
         {
-            System.out.println("Rätsel gelöst!");
+            long total = System.currentTimeMillis() - now;
+            System.out.println("Rätsel gelöst in " + total + " ms!");
         }
         else
         {
@@ -28,7 +31,7 @@ public class SimpleSolver
     {
         if (fläche > 19)
         {
-            return true;
+            return icoSoku.pruefeAlles();
         }
 
         // Mekre alle geprüften Plättchen
@@ -148,6 +151,11 @@ public class SimpleSolver
             int plättchenZahl = icoSoku.anzahlPlaettchenAnEcke(eckeToCheck);
 
             int punkteDifferenz = icoSoku.sollWertAnEcke(eckeToCheck) - icoSoku.istWertAnEcke(eckeToCheck);
+            if(punkteDifferenz < 0)
+            {
+                return false;
+            }
+
             if (punkteDifferenz > ((5 - plättchenZahl) * 3))
             {
                 return false;
