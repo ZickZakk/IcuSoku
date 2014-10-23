@@ -14,16 +14,18 @@ public class Programm
         int[] problem2 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
         int[] problem3 = {6, 12, 9, 10, 7, 2, 8, 1, 3, 5, 4, 11};
         int[] problem4 = {12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+        int[] problem5 = {10, 4, 8, 7, 5, 9, 3, 2, 11, 6, 1, 12};
 
         ArrayList<int[]> alleProbleme = new ArrayList<int[]>();
-        alleProbleme.add(problem1);
+        //        alleProbleme.add(problem1);
         //        alleProbleme.add(problem2);
         //        alleProbleme.add(problem3);
         //        alleProbleme.add(problem4);
+        alleProbleme.add(problem5);
 
-        //        long gesamtZeit = solveStandard(alleProbleme);
+                long gesamtZeit = solveStandard(alleProbleme);
         //long gesamtZeit = solveWithSortedFlächen(alleProbleme);
-        long gesamtZeit = solveWithSortedFlächenAdvanced(alleProbleme);
+//        long gesamtZeit = solveWithSortedFlächenAdvanced(alleProbleme);
 
         System.out.println("Alle " + alleProbleme.size() + " Probleme in " + gesamtZeit + " ms gelöst.");
     }
